@@ -22,6 +22,9 @@ const app  = express();
 const PORT = parseInt(process.env.PORT ?? '3001', 10);
 const FRONTEND_URL = process.env.FRONTEND_URL ?? 'http://localhost:5173';
 
+// Trust proxy headers set by ngrok / reverse proxies
+app.set('trust proxy', 1);
+
 // Security & parsing
 app.use(helmet());
 app.use(cors({

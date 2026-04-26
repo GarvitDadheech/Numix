@@ -1,6 +1,7 @@
 import { installMiniKit } from './lib/minikit'
 installMiniKit() // MUST be before React renders
 
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'

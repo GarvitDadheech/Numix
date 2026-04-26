@@ -8,6 +8,7 @@ async function apiFetch<T>(
 ): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': '1',
     ...(options.headers as Record<string, string>),
   }
   if (nullifierHash) {
@@ -26,23 +27,23 @@ async function apiFetch<T>(
 }
 
 export async function generateVerifyNonce(): Promise<{ nonce: string }> {
-  return apiFetch<{ nonce: string }>('/api/auth/nonce', { method: 'GET' })
+  return apiFetch<{ nonce: string }>('/api/auth/generate-verify-nonce', { method: 'POST' })
 }
 
 export async function verifyHuman(
   payload: object,
   nonce: string
 ): Promise<{ success: boolean; nullifier_hash: string; wallet_address: string }> {
-  return apiFetch('/api/auth/verify', {
+  return apiFetch('/api/auth/verify-human', {
     method: 'POST',
-    body: JSON.stringify({ payload, nonce }),
+    body: JSON.stringify({ payload, action: 'verify-numix-player', nonce }),
   })
 }
 
 export async function generatePaymentNonce(
   nullifierHash: string
 ): Promise<{ id: string }> {
-  return apiFetch('/api/stake/nonce', { method: 'POST' }, nullifierHash)
+  return apiFetch('/api/payment/generate-nonce', { method: 'POST' }, nullifierHash)
 }
 
 export async function confirmStake(
@@ -50,7 +51,7 @@ export async function confirmStake(
   nullifierHash: string
 ): Promise<{ success: boolean; queue_id: string }> {
   return apiFetch(
-    '/api/stake/confirm',
+    '/api/payment/confirm-stake',
     {
       method: 'POST',
       body: JSON.stringify(params),
@@ -62,11 +63,11 @@ export async function confirmStake(
 export async function getMatchmakingStatus(
   nullifierHash: string
 ): Promise<{ status: string; game_id?: string }> {
-  return apiFetch('/api/matchmaking/status', { method: 'GET' }, nullifierHash)
+  return apiFetch(`/api/matchmaking/status?nullifier_hash=${nullifierHash}`, { method: 'GET' })
 }
 
 export async function leaveMatchmaking(nullifierHash: string): Promise<void> {
-  return apiFetch('/api/matchmaking/leave', { method: 'POST' }, nullifierHash)
+  return apiFetch('/api/matchmaking/leave', { method: 'DELETE' }, nullifierHash)
 }
 
 export async function submitAnswer(
@@ -77,7 +78,7 @@ export async function submitAnswer(
   nullifierHash: string
 ): Promise<void> {
   return apiFetch(
-    `/api/games/${gameId}/answer`,
+    `/api/game/${gameId}/submit-answer`,
     {
       method: 'POST',
       body: JSON.stringify({ round_number: roundNumber, answer, time_ms: timeMs }),
@@ -87,11 +88,11 @@ export async function submitAnswer(
 }
 
 export async function getGame(gameId: string): Promise<Game> {
-  return apiFetch<Game>(`/api/games/${gameId}`, { method: 'GET' })
+  return apiFetch<Game>(`/api/game/${gameId}`, { method: 'GET' })
 }
 
 export async function getGameHistory(nullifierHash: string): Promise<Game[]> {
-  return apiFetch<Game[]>('/api/games/history', { method: 'GET' }, nullifierHash)
+  return apiFetch<Game[]>('/api/game/history', { method: 'GET' }, nullifierHash)
 }
 
 export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
@@ -99,7 +100,7 @@ export async function getLeaderboard(limit = 50): Promise<LeaderboardEntry[]> {
 }
 
 export async function requestNotificationPermission(nullifierHash: string): Promise<void> {
-  return apiFetch('/api/notifications/permission', { method: 'POST' }, nullifierHash)
+  return apiFetch('/api/notifications/request-permission', { method: 'POST' }, nullifierHash)
 }
 
 export async function getUserProfile(
@@ -114,5 +115,5 @@ export async function getUserProfile(
   ties: number
   wld_earned: number
 }> {
-  return apiFetch('/api/users/me', { method: 'GET' }, nullifierHash)
+  return apiFetch(`/api/auth/me?nullifier_hash=${nullifierHash}`, { method: 'GET' })
 }

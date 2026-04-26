@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { ISuccessResult } from '@worldcoin/minikit-js';
 import { verifyHuman } from '../services/worldId';
-import { upsertUser } from '../db/queries/users';
+import { upsertUser, getUserByNullifier } from '../db/queries/users';
 import pool from '../db/pool';
 import { authLimiter } from '../middleware/rateLimit';
 
@@ -85,6 +85,38 @@ router.post('/verify-human', authLimiter, async (req: Request, res: Response): P
   } catch (err) {
     console.error('[auth] verify-human error:', err);
     res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+// GET /api/auth/me?nullifier_hash=xxx
+router.get('/me', async (req: Request, res: Response): Promise<void> => {
+  const nullifierHash = req.query.nullifier_hash as string ?? req.headers['x-nullifier-hash'] as string;
+
+  if (!nullifierHash) {
+    res.status(400).json({ error: 'Missing nullifier_hash' });
+    return;
+  }
+
+  try {
+    const user = await getUserByNullifier(nullifierHash);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({
+      nullifier_hash: user.nullifier_hash,
+      wallet_address: user.wallet_address,
+      elo_rating: user.elo_rating,
+      games_played: user.games_played,
+      wins: user.games_won,
+      losses: user.games_played - user.games_won,
+      ties: 0,
+      wld_earned: Number(user.total_wld_earned),
+    });
+  } catch (err) {
+    console.error('[auth] me error:', err);
+    res.status(500).json({ error: 'Failed to fetch user' });
   }
 });
 

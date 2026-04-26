@@ -15,7 +15,7 @@ export default function VerifyScreen() {
 
   const handleVerify = async () => {
     const result = await verify()
-    if (result) navigate('/home')
+if (result) navigate('/home')
   }
 
   return (

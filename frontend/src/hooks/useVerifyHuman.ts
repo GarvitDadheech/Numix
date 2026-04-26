@@ -28,7 +28,7 @@ export function useVerifyHuman(): UseVerifyHumanResult {
       // 2. Call MiniKit verify
       const { finalPayload } = await MiniKit.commandsAsync.verify({
         action: 'verify-numix-player',
-        verification_level: VerificationLevel.Orb,
+        verification_level: VerificationLevel.Device,
         signal: nonce,
       })
 
@@ -45,7 +45,7 @@ export function useVerifyHuman(): UseVerifyHumanResult {
       // 3. Verify with backend
       const result = await verifyHuman(finalPayload, nonce)
 
-      if (!result.success) {
+if (!result.success) {
         setError('Backend verification failed.')
         return null
       }
