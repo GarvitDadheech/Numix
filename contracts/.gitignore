@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Hardhat artifacts and cache
+artifacts/
+cache/
+typechain-types/
+
+# Deployment outputs (contain deployed addresses — commit these if you want)
+# deployments/
+
+# Environment variables
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

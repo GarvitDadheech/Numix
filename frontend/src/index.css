@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  background-color: #0D0D0F;
+  color: #F4F4F5;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#root {
+  height: 100%;
+}
+
+/* ── Page entrance ── */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: page-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Generic fade ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fade-in { animation: fade-in 0.3s ease both; }
+
+/* ── Slide up (cards, toasts) ── */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up { animation: slide-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── Scale pop (score change, match found) ── */
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.pop { animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ── Score number change ── */
+@keyframes score-up {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+.score-change { animation: score-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ── Shake (wrong answer / error) ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%  { transform: translateX(-6px); }
+  30%  { transform: translateX(6px);  }
+  45%  { transform: translateX(-4px); }
+  60%  { transform: translateX(4px);  }
+  75%  { transform: translateX(-2px); }
+}
+
+.shake { animation: shake 0.45s ease both; }
+
+/* ── Numpad press flash ── */
+@keyframes btn-flash {
+  0%   { background-color: #6C63FF22; }
+  50%  { background-color: #6C63FF44; }
+  100% { background-color: transparent; }
+}
+
+/* ── Searching radar pulse ── */
+@keyframes radar {
+  0%   { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.radar-ring {
+  animation: radar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.radar-ring-delay {
+  animation: radar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 0.7s;
+}
+
+.radar-ring-delay2 {
+  animation: radar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 1.4s;
+}
+
+/* ── Dot bounce (searching dots) ── */
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0) scale(0.85); opacity: 0.5; }
+  40%            { transform: translateY(-8px) scale(1); opacity: 1; }
+}
+
+/* ── Timer warning pulse ── */
+@keyframes timer-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0px #EF4444); }
+  50%       { filter: drop-shadow(0 0 8px #EF4444); }
+}
+
+.timer-danger { animation: timer-pulse 0.6s ease-in-out infinite; }
+
+/* ── Logo float ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* ── Confetti pieces ── */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+/* ── Star float (win) ── */
+@keyframes star-float {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-90vh) scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* ── Skeleton shimmer ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1E1E21 25%, #2A2A2E 50%, #1E1E21 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.75rem;
+}
+
+/* ── Glow button ── */
+.btn-glow {
+  box-shadow: 0 0 24px #6C63FF44, 0 4px 16px #6C63FF33;
+  transition: box-shadow 0.2s ease;
+}
+
+.btn-glow:active {
+  box-shadow: 0 0 12px #6C63FF33, 0 2px 8px #6C63FF22;
+}
+
+/* ── Gold glow ── */
+.gold-glow {
+  box-shadow: 0 0 20px #F5B80033, 0 2px 12px #F5B80022;
+}
+
+/* ── Numpad button ── */
+.numpad-btn {
+  background: #1E1E21;
+  border: 1px solid #2A2A2E;
+  border-radius: 0.875rem;
+  color: #F4F4F5;
+  font-size: 1.375rem;
+  font-weight: 700;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.08s ease, transform 0.08s ease, border-color 0.08s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.numpad-btn:active {
+  transform: scale(0.93);
+  background: #2A2A2E;
+  border-color: #6C63FF55;
+}
+
+.numpad-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.numpad-btn.pressed {
+  background: #6C63FF22;
+  border-color: #6C63FF55;
+}
+
+/* ── Round result overlay entrance ── */
+@keyframes overlay-in {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.overlay-enter {
+  animation: overlay-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Match found flash ── */
+@keyframes match-flash {
+  0%   { background-color: #0D0D0F; }
+  30%  { background-color: #1a1640; }
+  100% { background-color: #0D0D0F; }
+}
+
+.match-found { animation: match-flash 0.5s ease both; }
+
+/* ── ELO change badge ── */
+@keyframes badge-pop {
+  0%   { transform: translateY(4px) scale(0.8); opacity: 0; }
+  60%  { transform: translateY(-2px) scale(1.1); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.badge-pop { animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ── Scroll behaviour ── */
+.scroll-smooth {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Safe area for phones with notches ── */
+.safe-bottom {
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+.safe-top {
+  padding-top: max(2.5rem, env(safe-area-inset-top));
+}
